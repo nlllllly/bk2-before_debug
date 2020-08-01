@@ -4,9 +4,11 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  belongs_to :books
-  attachment :profile_image, destroy: false
-
+  has_many :books, dependent: :destroy
+  
   #バリデーションは該当するモデルに設定する。エラーにする条件を設定できる。
-  validates :name, length: {maximum: 20, minimum: 2}
+  validates :name, presence: true, length: { minimum: 2, maximum: 20 }
+  validates :introduction, presence: false, length: { maximum: 50 }
+
+  attachment :profile_image, destroy: false
 end
